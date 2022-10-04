@@ -25,7 +25,7 @@ jobs:
         pip install wheel
         pip install -r requirements.txt
     - name: Run tests
-      run: /
+      run: |
         cd dbt_python_model_testing_exploration
         python -m pytest tests
       env:
