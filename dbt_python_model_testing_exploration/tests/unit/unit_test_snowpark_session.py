@@ -11,6 +11,7 @@ def unit_test_session_fixture():
     unit_test_snowflake_connection_config = os.getenv(env_var)
     assert (
         unit_test_snowflake_connection_config is not None
+        and len(unit_test_snowflake_connection_config) > 0
     ), f"Expecting {env_var} env var to be set"
     connection_config = json.loads(unit_test_snowflake_connection_config)
     return Session.builder.configs(connection_config).create()
