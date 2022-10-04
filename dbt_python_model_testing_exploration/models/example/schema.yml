@@ -19,3 +19,16 @@ models:
         tests:
           - unique
           - not_null
+
+  - name: customer_orders
+    description: "Dummy join of customers with orders"
+  - name: high_value_customers_with_no_orders
+    description: "Dummy projection of customer_orders with filtering logic"
+
+sources:
+  - name: snowflakesampledata
+    database: snowflake_sample_data
+    schema: tpch_sf1
+    tables:
+      - name: orders
+      - name: customer
