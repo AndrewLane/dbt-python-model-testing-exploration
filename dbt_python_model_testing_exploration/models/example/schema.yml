@@ -24,6 +24,8 @@ models:
     description: "Dummy join of customers with orders"
   - name: high_value_customers_with_no_orders
     description: "Dummy projection of customer_orders with filtering logic"
+  - name: customer_total_order_price
+    description: "Dummy sum of order price by customer"
 
 sources:
   - name: snowflakesampledata
