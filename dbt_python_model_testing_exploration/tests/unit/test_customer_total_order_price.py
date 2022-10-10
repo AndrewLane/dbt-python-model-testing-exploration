@@ -4,7 +4,7 @@ from models.example.customer_total_order_price import model
 from unit_test_snowpark_session import unit_test_session_fixture  # noqa: F401
 
 
-def test_foo(unit_test_session):
+def test_customer_total_order_price(unit_test_session):
     input_df = unit_test_session.create_dataframe(
         [
             [1, "Customer With Many Orders", 1234.12, 1001, "O", 100.00],

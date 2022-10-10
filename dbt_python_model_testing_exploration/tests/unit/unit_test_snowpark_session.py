@@ -14,4 +14,6 @@ def unit_test_session_fixture():
         and len(unit_test_snowflake_connection_config) > 0
     ), f"Expecting {env_var} env var to be set"
     connection_config = json.loads(unit_test_snowflake_connection_config)
-    return Session.builder.configs(connection_config).create()
+    session = Session.builder.configs(connection_config).create()
+    session.add_packages("numpy")
+    return session
