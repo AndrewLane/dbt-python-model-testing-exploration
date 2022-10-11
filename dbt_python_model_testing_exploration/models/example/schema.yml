@@ -8,6 +8,8 @@ models:
     description: "Dummy projection of customer_orders with filtering logic"
   - name: customer_total_order_price
     description: "Dummy sum of order price by customer"
+  - name: random_customer_value
+    description: "Customer key with some dummy random value added to it"
 
 sources:
   - name: snowflakesampledata
