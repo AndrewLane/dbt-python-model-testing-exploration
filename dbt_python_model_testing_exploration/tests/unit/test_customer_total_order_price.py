@@ -28,7 +28,7 @@ def test_customer_total_order_price(unit_test_session):
     result_df = unit_test_session.create_dataframe(result_pandas_df)
 
     expected_df = unit_test_session.create_dataframe(
-        [[1, 300.00], [3, 600.00]],
-        schema=["c_custkey", "o_totalprice"],
+        [[1, 300.00, 322.50], [3, 600.00, 645.00]],
+        schema=["c_custkey", "o_totalprice", "o_totalprice_with_tax"],
     )
     assert result_df.collect() == expected_df.collect()
