@@ -13,7 +13,7 @@ $$
 
 def include_sales_tax(amount):
     # assumes 7.5% tax
-    return amount * 1.075
+    return amount * 1.075 if amount else 0.0
 $$
 ;
 

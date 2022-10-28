@@ -1,3 +1,7 @@
+from snowflake.snowpark.functions import call_udf
+from snowflake.snowpark.functions import round as snowparkround
+
+
 def model(dbt, session):
     dbt.config(materialized="table")
 
@@ -11,9 +15,7 @@ def model(dbt, session):
     )
     joined_df = joined_df.withColumn(
         "o_totalprice_with_tax",
-        include_sales_tax(
-            joined_df.col("o_totalprice")
-        ),  # how do I call this UDF that's now created in a macro?  we don't "register" anything with the session do we?
+        snowparkround(call_udf("include_sales_tax", joined_df.col("o_totalprice")), 2),
     )
     return joined_df.select(
         [
