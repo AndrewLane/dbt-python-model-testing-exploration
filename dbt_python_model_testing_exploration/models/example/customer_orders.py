@@ -1,11 +1,3 @@
-from snowflake.snowpark.functions import round as snowparkround
-
-
-def include_sales_tax(amount):
-    # assumes 7.5% tax
-    return snowparkround(amount * 1.075, 2)
-
-
 def model(dbt, session):
     dbt.config(materialized="table")
 
@@ -18,7 +10,10 @@ def model(dbt, session):
         join_type="left",
     )
     joined_df = joined_df.withColumn(
-        "o_totalprice_with_tax", include_sales_tax(joined_df.col("o_totalprice"))
+        "o_totalprice_with_tax",
+        include_sales_tax(
+            joined_df.col("o_totalprice")
+        ),  # how do I call this UDF that's now created in a macro?  we don't "register" anything with the session do we?
     )
     return joined_df.select(
         [
