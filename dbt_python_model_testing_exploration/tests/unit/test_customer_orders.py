@@ -2,6 +2,7 @@ from unittest.mock import Mock
 
 from models.example.customer_orders import model
 from unit_test_snowpark_session import unit_test_session_fixture  # noqa: F401
+from unit_test_snowpark_session import get_target_schema
 
 
 def test_customer_orders(unit_test_session):
@@ -35,6 +36,9 @@ def test_customer_orders(unit_test_session):
 
     mock_dbt = Mock()
     mock_dbt.source = mock_source
+    mock_this = Mock()
+    mock_dbt.this = mock_this
+    mock_this.schema = get_target_schema()
     result_df = model(mock_dbt, unit_test_session)
 
     expected_df = unit_test_session.create_dataframe(
@@ -42,7 +46,7 @@ def test_customer_orders(unit_test_session):
             [1, "Customer 1", 123.45, 1, "P", 100.00, 107.50],
             [2, "Customer 2", 0.0, 2, "F", 1.00, 1.08],
             [2, "Customer 2", 0.0, 3, "O", 10.00, 10.75],
-            [3, "Customer 3 with no orders", 100.00, None, None, None, None],
+            [3, "Customer 3 with no orders", 100.00, None, None, None, 0.0],
         ],
         schema=[
             "C_CUSTKEY",
@@ -54,4 +58,8 @@ def test_customer_orders(unit_test_session):
             "O_TOTALPRICE_WITH_TAX",
         ],
     )
-    assert result_df.collect() == expected_df.collect()
+    order_by_columns = ["C_CUSTKEY", "O_ORDERKEY"]
+    assert (
+        result_df.orderBy(order_by_columns).collect()
+        == expected_df.orderBy(order_by_columns).collect()
+    )

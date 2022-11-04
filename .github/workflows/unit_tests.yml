@@ -30,3 +30,4 @@ jobs:
         python -m pytest tests
       env:
         SNOWFLAKE_CONN_STR: ${{ secrets.SNOWFLAKE_CONN_STR }}
+        SNOWFLAKE_TARGET_SCHEMA: ${{ secrets.SNOWFLAKE_TARGET_SCHEMA }}

@@ -1,9 +1,5 @@
+from snowflake.snowpark.functions import call_udf
 from snowflake.snowpark.functions import round as snowparkround
-
-
-def include_sales_tax(amount):
-    # assumes 7.5% tax
-    return snowparkround(amount * 1.075, 2)
 
 
 def model(dbt, session):
@@ -18,7 +14,13 @@ def model(dbt, session):
         join_type="left",
     )
     joined_df = joined_df.withColumn(
-        "o_totalprice_with_tax", include_sales_tax(joined_df.col("o_totalprice"))
+        "o_totalprice_with_tax",
+        snowparkround(
+            call_udf(
+                f"{dbt.this.schema}.include_sales_tax", joined_df.col("o_totalprice")
+            ),
+            2,
+        ),
     )
     return joined_df.select(
         [
