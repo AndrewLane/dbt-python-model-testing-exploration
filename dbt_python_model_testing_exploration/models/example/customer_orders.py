@@ -15,7 +15,12 @@ def model(dbt, session):
     )
     joined_df = joined_df.withColumn(
         "o_totalprice_with_tax",
-        snowparkround(call_udf("include_sales_tax", joined_df.col("o_totalprice")), 2),
+        snowparkround(
+            call_udf(
+                f"{dbt.this.schema}.include_sales_tax", joined_df.col("o_totalprice")
+            ),
+            2,
+        ),
     )
     return joined_df.select(
         [
